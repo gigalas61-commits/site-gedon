@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site de Gédon — Lamentin, Guadeloupe</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  :root {
+    --green-dark: #085041;
+    --green-mid: #0F6E56;
+    --green: #1D9E75;
+    --green-light: #5DCAA5;
+    --green-pale: #9FE1CB;
+    --green-bg: #E1F5EE;
+    --amber: #BA7517;
+    --amber-bg: #FAEEDA;
+    --amber-dark: #633806;
+    --purple: #534AB7;
+    --purple-bg: #EEEDFE;
+    --purple-dark: #3C3489;
+    --coral: #D85A30;
+    --coral-bg: #FAECE7;
+    --coral-dark: #712B13;
+    --pink-bg: #FBEAF0;
+    --pink-dark: #72243E;
+    --blue-bg: #E6F1FB;
+    --blue-dark: #0C447C;
+    --gray-bg: #F5F5F3;
+    --gray-border: #E0E0E0;
+    --text: #1a1a1a;
+    --text-mid: #555555;
+    --text-light: #888888;
+    --white: #ffffff;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f0f0ee; color: var(--text); min-height: 100vh; }
+
+  .nav { background: var(--green-dark); padding: .875rem 1rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 16px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; }
+  .nav-logo i { font-size: 20px; color: var(--green-pale); }
+  .nav-menu { display: flex; gap: 4px; }
+  .nav-btn { background: none; border: none; color: var(--green-pale); font-size: 11px; cursor: pointer; padding: 5px 8px; border-radius: 6px; transition: background .15s; }
+  .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,.15); color: #fff; }
+
+  .page { display: none; padding: 1rem; max-width: 480px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  .hero { background: var(--green-dark); border-radius: var(--radius-md); padding: 1.5rem 1.25rem; margin-bottom: 1rem; text-align: center; position: relative; overflow: hidden; }
+  .hero-icon { font-size: 48px; color: var(--green-pale); margin-bottom: .5rem; display: block; }
+  .hero-title { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--green-pale); margin-bottom: 1rem; }
+  .lang-bar { display: flex; gap: 8px; justify-content: center; margin-bottom: .5rem; }
+  .lbtn { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 20px; padding: 4px 14px; font-size: 12px; color: #fff; cursor: pointer; }
+  .lbtn.on { background: rgba(255,255,255,.35); font-weight: 600; }
+
+  .card { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius-md); padding: 1rem 1.125rem; margin-bottom: 10px; }
+  .card.green-border { border-color: var(--green-light); }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
+  .stat { background: var(--gray-bg); border-radius: var(--radius-sm); padding: .75rem; text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 700; color: var(--green-mid); }
+  .stat-lbl { font-size: 10px; color: var(--text-light); margin-top: 2px; line-height: 1.3; }
+  .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+  .nav-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius-md); padding: 1rem .875rem; cursor: pointer; transition: border-color .15s, background .15s; }
+  .nav-card:hover { border-color: var(--green); background: var(--green-bg); }
+  .nav-card i { font-size: 26px; color: var(--green); display: block; margin-bottom: 6px; }
+  .nav-card-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .nav-card-sub { font-size: 11px; color: var(--text-light); line-height: 1.3; }
+  .section-lbl { font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: .8px; margin: 1rem 0 .625rem; }
+
+  .tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 4px; }
+  .tag-site { background: var(--green-bg); color: var(--green-dark); }
+  .tag-conseil { background: var(--purple-bg); color: var(--purple-dark); }
+  .tag-action { background: var(--amber-bg); color: var(--amber-dark); }
+  .tag-echange { background: #EAF3DE; color: #27500A; }
+  .tag-pending { background: var(--amber-bg); color: var(--amber-dark); }
+
+  .timeline { position: relative; padding-left: 36px; }
+  .timeline::before { content: ''; position: absolute; left: 14px; top: 8px; bottom: 8px; width: 2px; background: var(--gray-border); border-radius: 2px; }
+  .t-item { position: relative; margin-bottom: 12px; }
+  .t-dot { position: absolute; left: -29px; top: 16px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--gray-bg); z-index: 1; }
+  .t-dot.y1 { background: var(--green); }
+  .t-dot.y2 { background: var(--purple); }
+  .t-dot.now { background: var(--coral); }
+  .t-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius-md); padding: .875rem 1rem; cursor: pointer; }
+  .t-card:hover { border-color: var(--green-light); }
+  .t-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .t-era { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; }
+  .era-y1 { background: var(--green-bg); color: var(--green-dark); }
+  .era-y2 { background: var(--purple-bg); color: var(--purple-dark); }
+  .era-now { background: var(--coral-bg); color: var(--coral-dark); }
+  .t-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .t-desc { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+  .t-detail { display: none; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--gray-border); font-size: 12px; color: var(--text-mid); line-height: 1.6; }
+  .t-detail.open { display: block; }
+  .chevron { font-size: 16px; color: var(--text-light); transition: transform .15s; }
+  .year-sep { font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: .8px; margin: 1rem 0 .75rem; position: relative; left: -36px; }
+
+  .quote-card { background: var(--gray-bg); border-left: 3px solid var(--green); padding: 1rem 1.125rem; margin-bottom: 10px; }
+  .quote-text { font-size: 14px; font-style: italic; color: var(--text); line-height: 1.7; margin-bottom: 6px; }
+  .quote-attr { font-size: 11px; color: var(--text-light); }
+
+  .g-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+  .g-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: border-color .15s; }
+  .g-card:hover { border-color: var(--green); }
+  .g-thumb { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .g-thumb-ph { width: 100%; aspect-ratio: 4/3; background: #0a2a20; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .g-thumb-ph i { font-size: 30px; color: var(--green-pale); }
+  .g-dur { font-size: 10px; color: var(--green-pale); }
+  .g-info { padding: .5rem .625rem; }
+  .g-cap { font-size: 11px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 2px; }
+  .g-met { font-size: 10px; color: var(--text-light); }
+  .lb { display: none; background: var(--gray-bg); border-radius: var(--radius-md); margin-bottom: 1rem; overflow: hidden; }
+  .lb.open { display: block; }
+  .lb-top { background: #0a2a20; min-height: 200px; display: flex; align-items: center; justify-content: center; }
+  .lb-top img { width: 100%; max-height: 300px; object-fit: contain; display: block; }
+  .lb-top video { width: 100%; max-height: 300px; display: block; }
+  .lb-ph { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 2rem; }
+  .lb-ph i { font-size: 36px; color: var(--green-light); }
+  .lb-ph p { font-size: 12px; color: var(--green-pale); text-align: center; line-height: 1.5; }
+  .lb-bar { display: flex; align-items: flex-start; justify-content: space-between; padding: .75rem 1rem; gap: 8px; }
+  .lb-cap { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .lb-met { font-size: 11px; color: var(--text-light); }
+  .btn-cls { font-size: 20px; color: var(--text-light); background: none; border: none; cursor: pointer; padding: 2px; }
+  .lb-nav { display: flex; gap: 6px; padding: 0 1rem .75rem; }
+  .nav-btn-lb { flex: 1; padding: 6px; border-radius: 8px; border: 1px solid var(--gray-border); background: var(--white); font-size: 12px; cursor: pointer; color: var(--text-mid); display: flex; align-items: center; justify-content: center; gap: 4px; }
+  .nav-btn-lb:disabled { opacity: .3; cursor: default; }
+
+  .step-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 1.25rem; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-border); transition: background .2s; }
+  .dot.active { background: var(--green); }
+  .dot.done { background: var(--green-light); }
+  .form-step { display: none; }
+  .form-step.active { display: block; }
+  .p-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+  .p-btn { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius-md); padding: .875rem .75rem; cursor: pointer; text-align: center; transition: all .15s; }
+  .p-btn.sel { border: 2px solid var(--green); background: var(--green-bg); }
+  .p-btn i { font-size: 22px; color: var(--green); display: block; margin-bottom: 4px; }
+  .p-btn-lbl { font-size: 13px; font-weight: 600; color: var(--text); }
+  .p-btn-sub { font-size: 10px; color: var(--text-light); margin-top: 2px; }
+  .c-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1rem; }
+  .c-btn { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius-md); padding: .875rem 1rem; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; transition: all .15s; }
+  .c-btn.sel { border: 2px solid var(--green); background: var(--green-bg); }
+  .c-btn i { font-size: 20px; color: var(--green); flex-shrink: 0; }
+  .c-btn-lbl { font-size: 13px; font-weight: 600; color: var(--text); }
+  .c-btn-sub { font-size: 11px; color: var(--text-light); margin-top: 1px; }
+  .eng-box { background: var(--gray-bg); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem; }
+  .eng-prompt { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .eng-starter { font-size: 13px; color: var(--green-mid); font-style: italic; background: var(--green-bg); border-radius: 6px; padding: .5rem .75rem; margin-bottom: 8px; }
+  textarea { width: 100%; min-height: 80px; resize: vertical; font-size: 13px; color: var(--text); background: var(--white); border: 1px solid var(--gray-border); border-radius: 8px; padding: .75rem; font-family: inherit; line-height: 1.5; }
+  textarea:focus { outline: none; border-color: var(--green); }
+  .char-count { font-size: 11px; color: var(--text-light); text-align: right; margin-top: 4px; }
+  .warn-box { background: var(--amber-bg); border-radius: 8px; padding: .75rem 1rem; margin-bottom: 1rem; display: flex; gap: 8px; align-items: flex-start; }
+  .warn-box i { font-size: 15px; color: var(--amber-dark); flex-shrink: 0; margin-top: 1px; }
+  .warn-box p { font-size: 12px; color: var(--amber-dark); line-height: 1.5; }
+  .wall-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius-md); padding: .875rem 1rem; margin-bottom: 8px; }
+  .wall-top { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .wall-text { font-size: 13px; color: var(--text); font-style: italic; line-height: 1.5; margin-bottom: 4px; }
+  .wall-meta { font-size: 11px; color: var(--text-light); }
+  .counter-box { background: var(--gray-bg); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem; }
+  .counter-total { display: flex; align-items: baseline; gap: 8px; margin-bottom: .75rem; }
+  .counter-num { font-size: 32px; font-weight: 700; color: var(--green-mid); }
+  .counter-lbl { font-size: 13px; color: var(--text-light); }
+  .c-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .c-item { background: var(--white); border-radius: 8px; padding: .5rem .75rem; display: flex; align-items: center; gap: 8px; }
+  .c-item i { font-size: 16px; }
+  .c-num { font-size: 15px; font-weight: 700; color: var(--text); }
+  .c-lbl { font-size: 11px; color: var(--text-light); }
+
+  .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .p-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius-md); padding: .75rem; }
+  .p-name { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 2px; }
+  .p-role { font-size: 11px; color: var(--text-light); line-height: 1.3; margin-bottom: 4px; }
+  .p-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; display: inline-block; }
+  .pb-tech { background: var(--green-bg); color: var(--green-dark); }
+  .pb-fin { background: var(--amber-bg); color: var(--amber-dark); }
+  .pb-inst { background: var(--purple-bg); color: var(--purple-dark); }
+  .pb-edu { background: #EAF3DE; color: #27500A; }
+
+  .btn-primary { width: 100%; padding: .875rem; border-radius: var(--radius-md); background: var(--green); color: #fff; border: none; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: .5rem; }
+  .btn-primary:hover { background: var(--green-mid); }
+  .btn-primary:disabled { background: var(--gray-border); color: var(--text-light); cursor: not-allowed; }
+  .btn-secondary { width: 100%; padding: .75rem; border-radius: var(--radius-md); border: 1px solid var(--gray-border); background: var(--white); font-size: 13px; cursor: pointer; color: var(--text-mid); margin-top: 6px; }
+  .btn-back { padding: .75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--gray-border); background: var(--white); font-size: 13px; cursor: pointer; color: var(--text-mid); }
+  .btn-row { display: flex; gap: 8px; }
+  .btn-row .btn-primary { margin-top: 0; }
+
+  .success-card { background: var(--green-bg); border: 1px solid var(--green-light); border-radius: var(--radius-md); padding: 1.5rem 1.25rem; text-align: center; margin-bottom: 1rem; }
+  .success-icon { font-size: 44px; color: var(--green-mid); margin-bottom: .75rem; display: block; }
+  .success-title { font-size: 18px; font-weight: 700; color: var(--green-dark); margin-bottom: 6px; }
+  .success-msg { font-size: 13px; color: var(--green-mid); line-height: 1.6; }
+
+  .legal-box { background: var(--amber-bg); border-radius: 8px; padding: .75rem 1rem; display: flex; gap: 8px; margin-bottom: 1rem; align-items: flex-start; }
+  .legal-box i { font-size: 15px; color: var(--amber-dark); flex-shrink: 0; margin-top: 1px; }
+  .legal-box p { font-size: 11px; color: var(--amber-dark); line-height: 1.5; }
+
+  .tabs { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .tab { flex: 1; padding: 7px 4px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1px solid var(--gray-border); background: var(--white); color: var(--text-mid); cursor: pointer; text-align: center; min-width: 60px; }
+  .tab.on { background: var(--green); color: #fff; border-color: var(--green); }
+  .tab-panel { display: none; }
+  .tab-panel.on { display: block; }
+
+  .footer { background: var(--green-dark); color: var(--green-pale); text-align: center; font-size: 11px; padding: 1.25rem; margin-top: 2rem; line-height: 1.6; }
+  .footer strong { color: #fff; }
+
+  .filter-bar { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .fbtn { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid var(--gray-border); background: var(--white); color: var(--text-mid); cursor: pointer; }
+  .fbtn.on { background: var(--green); color: #fff; border-color: var(--green); }
+
+  .mod-login { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius-md); padding: 1.25rem; }
+  .mod-input { width: 100%; height: 40px; padding: 0 .75rem; font-size: 13px; border-radius: 8px; border: 1px solid var(--gray-border); background: var(--white); color: var(--text); margin-bottom: 10px; }
+  .mod-input:focus { outline: none; border-color: var(--green); }
+  .mod-err { font-size: 12px; color: #A32D2D; margin-bottom: 8px; display: none; }
+  .btn-approve { flex: 1; padding: 5px; border-radius: 8px; background: var(--green-bg); border: 1px solid var(--green-light); color: var(--green-dark); font-size: 12px; cursor: pointer; }
+  .btn-reject { padding: 5px 10px; border-radius: 8px; background: var(--coral-bg); border: 1px solid #F0997B; color: var(--coral-dark); font-size: 12px; cursor: pointer; }
+  .mod-actions { display: flex; gap: 6px; margin-top: 8px; }
+  .pending-card { background: #FFFBF0; border: 1px solid var(--amber); border-radius: var(--radius-md); padding: .875rem 1rem; margin-bottom: 8px; }
+
+  input[type=text], input[type=date], select { width: 100%; height: 38px; padding: 0 .75rem; font-size: 13px; border-radius: 8px; border: 1px solid var(--gray-border); background: var(--white); color: var(--text); margin-bottom: .625rem; font-family: inherit; }
+  input:focus, select:focus { outline: none; border-color: var(--green); }
+  label { font-size: 12px; color: var(--text-mid); display: block; margin-bottom: 3px; }
+  input[type=file] { font-size: 12px; width: 100%; margin-bottom: .625rem; }
+
+  .modo-zone { background: #f5f5f3; border-radius: 12px; padding: 1rem; margin-top: .75rem; }
+  .modo-input { width: 100%; height: 36px; padding: 0 .75rem; font-size: 13px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 8px; font-family: inherit; }
+  .modo-input:focus { outline: none; border-color: var(--green); }
+  .modo-select { width: 100%; height: 36px; padding: 0 .75rem; font-size: 13px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: .75rem; font-family: inherit; }
+  .modo-textarea { width: 100%; min-height: 60px; padding: .5rem .75rem; font-size: 13px; border-radius: 8px; border: 1px solid #ccc; font-family: inherit; margin-bottom: .5rem; resize: vertical; }
+  .modo-btn-open { width: 100%; padding: .625rem; border-radius: 8px; border: 1px dashed #1D9E75; background: #E1F5EE; color: #085041; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .modo-btn-submit { width: 100%; padding: .625rem; border-radius: 8px; background: #1D9E75; color: #fff; border: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .modo-btn-cancel { padding: .5rem 1rem; border-radius: 8px; border: 1px solid #ccc; background: #fff; font-size: 13px; cursor: pointer; }
+  .modo-btn-login { flex: 1; padding: .5rem; border-radius: 8px; background: #1D9E75; color: #fff; border: none; font-size: 13px; cursor: pointer; }
+  .modo-err { font-size: 11px; color: #A32D2D; display: none; margin-bottom: 6px; }
+  .modo-lbl { font-size: 12px; color: #666; display: block; margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo"><i class="ti ti-trees"></i>Site de Gédon</div>
+  <div class="nav-menu">
+    <button class="nav-btn active" onclick="goPage('accueil',this)"><i class="ti ti-home"></i></button>
+    <button class="nav-btn" onclick="goPage('histoire',this)"><i class="ti ti-clock-history"></i></button>
+    <button class="nav-btn" onclick="goPage('galerie',this)"><i class="ti ti-photo"></i></button>
+    <button class="nav-btn" onclick="goPage('mur',this)"><i class="ti ti-heart"></i></button>
+    <button class="nav-btn" onclick="goPage('partenaires',this)"><i class="ti ti-building-community"></i></button>
+  </div>
+</nav>
+
+<!-- PAGE ACCUEIL -->
+<div class="page active" id="page-accueil">
+  <div class="hero" style="padding:0;overflow:hidden;position:relative;min-height:200px;">
+    <div style="position:relative;z-index:1;padding:1.5rem 1.25rem 1.25rem;background:linear-gradient(180deg,rgba(8,80,65,.4) 0%,rgba(8,80,65,.9) 100%);min-height:200px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;text-align:center;">
+      <i class="ti ti-trees hero-icon"></i>
+      <div class="hero-title" id="h-title">Site de Gédon</div>
+      <div class="hero-sub" id="h-sub">Lamentin · Guadeloupe · Patrimoine vivant &amp; Nature</div>
+      <div class="lang-bar">
+        <button class="lbtn on" onclick="setLang('fr',this)">FR</button>
+        <button class="lbtn" onclick="setLang('kw',this)">KW</button>
+        <button class="lbtn" onclick="setLang('en',this)">EN</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num">46</div><div class="stat-lbl">Élèves ambassadeurs</div></div>
+    <div class="stat"><div class="stat-num">2</div><div class="stat-lbl">Classes engagées</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-lbl">Partenaires</div></div>
+  </div>
+
+  <div class="section-lbl" id="lbl-explorer">Explorer</div>
+  <div class="nav-grid">
+    <div class="nav-card" onclick="goPage('histoire',document.querySelectorAll('.nav-btn')[1])">
+      <i class="ti ti-clock-history" style="color:#BA7517"></i>
+      <div class="nav-card-title" id="nc-hist">Notre histoire</div>
+      <div class="nav-card-sub" id="nc-hist-sub">Mémoire du lieu et projet sur 2 ans</div>
+    </div>
+    <div class="nav-card" onclick="goPage('galerie',document.querySelectorAll('.nav-btn')[2])">
+      <i class="ti ti-photo" style="color:#534AB7"></i>
+      <div class="nav-card-title" id="nc-gal">Galerie</div>
+      <div class="nav-card-sub" id="nc-gal-sub">Photos et vidéos du projet</div>
+    </div>
+    <div class="nav-card" onclick="goPage('mur',document.querySelectorAll('.nav-btn')[3])">
+      <i class="ti ti-heart" style="color:#D4537E"></i>
+      <div class="nav-card-title" id="nc-mur">S'engager</div>
+      <div class="nav-card-sub" id="nc-mur-sub">Laisser un engagement pour Gédon</div>
+    </div>
+    <div class="nav-card" onclick="goPage('partenaires',document.querySelectorAll('.nav-btn')[4])">
+      <i class="ti ti-building-community" style="color:#1D9E75"></i>
+      <div class="nav-card-title" id="nc-part">Partenaires</div>
+      <div class="nav-card-sub" id="nc-part-sub">Les acteurs du projet</div>
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text" id="quote-home">"Gédon, c'est notre rivière. Dans les années 50, les grands-parents venaient y laver et faire sécher leurs vêtements. Longtemps oublié, le site renaît grâce à vous."</div>
+    <div class="quote-attr">— Mémoire vivante du Lamentin · Grande Rivière à Goyaves</div>
+  </div>
+
+  <div class="footer" style="border-radius:var(--radius-md);margin-top:0;">
+    <strong>Aire Terrestre Éducative — Site de Gédon</strong><br>
+    École élémentaire de la Rosière · Lamentin, Guadeloupe<br>
+    Mme Galas · M. Daibissaram · 46 ambassadeurs
+  </div>
+</div>
+
+<!-- PAGE HISTOIRE -->
+<div class="page" id="page-histoire">
+  <div class="hero" style="text-align:left;padding:1.25rem;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <i class="ti ti-clock-history" style="font-size:28px;color:var(--green-pale)"></i>
+      <div><div class="hero-title" style="font-size:18px;">Notre histoire</div><div class="hero-sub" style="margin-bottom:0;">Site de Gédon · Lamentin</div></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="showTab('anciens',this)">Anciens</button>
+    <button class="tab" onclick="showTab('projet',this)">Projet</button>
+    <button class="tab" onclick="showTab('defs',this)">C'est quoi ?</button>
+  </div>
+
+  <div class="tab-panel on" id="tab-anciens">
+    <div class="quote-card">
+      <div class="quote-text">"Nou té vini lave a Gédon tout sanmdi maten. Dlo-la té fwèt, té bon. Sé la tout moun té konnèt yò."</div>
+      <div class="quote-attr">— Témoignage d'une habitante · Années 50</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"Avan nou té ni dlo adan kay, Gédon sété péyi nou. Nou té séché rad nou sou wòch, zanfan té jouwé adan dlo fwèt-la."</div>
+      <div class="quote-attr">— Souvenir partagé au Conseil d'élèves · Janvier 2025</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"Je me souviens que ma grand-mère m'y emmenait le dimanche. On mangeait sous les arbres, au bord de la rivière. C'était notre lieu de bonheur."</div>
+      <div class="quote-attr">— Habitant du quartier de la Rosière, Lamentin</div>
+    </div>
+    <div class="card" style="background:var(--green-bg);border-color:var(--green-light);">
+      <div style="font-size:13px;font-weight:600;color:var(--green-dark);margin-bottom:4px;"><i class="ti ti-droplet-half-2" style="font-size:14px;vertical-align:-2px;margin-right:4px;"></i>La Grande Rivière à Goyaves</div>
+      <div style="font-size:12px;color:var(--green-mid);line-height:1.6;">La plus grande rivière de Guadeloupe (39,5 km). Elle longe le site de Gédon et marque la frontière entre Lamentin et Sainte-Rose.</div>
+    </div>
+    <button class="btn-primary" onclick="goPage('mur',document.querySelectorAll('.nav-btn')[3])"><i class="ti ti-plus"></i>Ajouter votre témoignage</button>
+  </div>
+
+  <div class="tab-panel" id="tab-projet">
+    <div class="stat-row">
+      <div class="stat"><div class="stat-num">46</div><div class="stat-lbl">Élèves</div></div>
+      <div class="stat"><div class="stat-num">2 ans</div><div class="stat-lbl">De projet</div></div>
+      <div class="stat"><div class="stat-num">8</div><div class="stat-lbl">Partenaires</div></div>
+    </div>
+    <div class="timeline">
+      <div class="year-sep">Année 1 · 2024–2025</div>
+      <div class="t-item"><div class="t-dot y1"></div>
+        <div class="t-card" onclick="toggleT(this)">
+          <div class="t-card-top"><span class="t-era era-y1">Sept. 2024</span><i class="ti ti-chevron-down chevron"></i></div>
+          <div class="t-title">Naissance du projet</div>
+          <div class="t-desc">Les CE2A et CE2B lancent leur Aire Terrestre Éducative.</div>
+          <div class="t-detail">Les classes de Mme Galas et M. Daibissaram démarrent. Le conseil d'élèves est créé pour gouverner le projet.</div>
+        </div>
+      </div>
+      <div class="t-item"><div class="t-dot y1"></div>
+        <div class="t-card" onclick="toggleT(this)">
+          <div class="t-card-top"><span class="t-era era-y1">Nov.–Déc. 2024</span><i class="ti ti-chevron-down chevron"></i></div>
+          <div class="t-title">Élection du conseil d'élèves</div>
+          <div class="t-desc">Donovan élu président. Brigade de nettoyage de l'école lancée.</div>
+          <div class="t-detail">18 novembre : élection du conseil. 6 décembre : première brigade de nettoyage.</div>
+        </div>
+      </div>
+      <div class="t-item"><div class="t-dot y1"></div>
+        <div class="t-card" onclick="toggleT(this)">
+          <div class="t-card-top"><span class="t-era era-y1">Janvier 2025</span><i class="ti ti-chevron-down chevron"></i></div>
+          <div class="t-title">Gédon choisi comme aire éducative</div>
+          <div class="t-desc">Visite de la commune, témoignage de Mme Derby, découverte du site.</div>
+          <div class="t-detail">20 janvier : Mme Derby partage ses souvenirs. Le site est choisi. 24 janvier : première visite — 3 sacs de déchets ramassés.</div>
+        </div>
+      </div>
+      <div class="t-item"><div class="t-dot y1"></div>
+        <div class="t-card" onclick="toggleT(this)">
+          <div class="t-card-top"><span class="t-era era-y1">Fév.–Mars 2025</span><i class="ti ti-chevron-down chevron"></i></div>
+          <div class="t-title">Concours d'affiches &amp; échanges</div>
+          <div class="t-desc">Affiches pour protéger le site. Échanges avec l'école de Madame, Sainte-Rose.</div>
+          <div class="t-detail">20 mars : visite du Grand Étang de Cluny. 27 mars : les correspondants de Sainte-Rose viennent à Gédon.</div>
+        </div>
+      </div>
+      <div class="year-sep">Année 2 · 2025–2026</div>
+      <div class="t-item"><div class="t-dot y2"></div>
+        <div class="t-card" onclick="toggleT(this)">
+          <div class="t-card-top"><span class="t-era era-y2">Sept. 2025</span><i class="ti ti-chevron-down chevron"></i></div>
+          <div class="t-title">Nouvelles classes, même engagement</div>
+          <div class="t-desc">46 élèves reprennent le flambeau. Keyven élu président du Conseil de la Terre.</div>
+          <div class="t-detail">CE1/CE2 et CE2 rejoignent le projet. 26 septembre : les anciens CE2 présentent le projet aux nouveaux ambassadeurs.</div>
+        </div>
+      </div>
+      <div class="t-item"><div class="t-dot y2"></div>
+        <div class="t-card" onclick="toggleT(this)">
+          <div class="t-card-top"><span class="t-era era-y2">Déc. 2025</span><i class="ti ti-chevron-down chevron"></i></div>
+          <div class="t-title">Découverte de Gédon &amp; pépinières</div>
+          <div class="t-desc">5 déc. : visite du site. 11 déc. : pépinières à Birmingham, Baie-Mahault.</div>
+          <div class="t-detail">5 décembre : les nouveaux élèves découvrent Gédon avec émerveillement. 11 décembre : atelier semis de cacao.</div>
+        </div>
+      </div>
+      <div class="t-item"><div class="t-dot y2"></div>
+        <div class="t-card" onclick="toggleT(this)">
+          <div class="t-card-top"><span class="t-era era-y2">Mars–Mai 2026</span><i class="ti ti-chevron-down chevron"></i></div>
+          <div class="t-title">Sorties nature &amp; Conseils de la Terre</div>
+          <div class="t-desc">Zoo des Mamelles, plantation Amandiers, Valombreuse, CANBT au 3e Conseil.</div>
+          <div class="t-detail">27 mars : Zoo des Mamelles. 1er avril : plantation bord de mer. 30 avril : Valombreuse. 12 mai : 3e Conseil de la Terre avec la CANBT.</div>
+        </div>
+      </div>
+      <div class="t-item"><div class="t-dot now"></div>
+        <div class="t-card" onclick="toggleT(this)">
+          <div class="t-card-top"><span class="t-era era-now">Juin 2026 · À venir</span><i class="ti ti-chevron-down chevron"></i></div>
+          <div class="t-title">Grande plantation &amp; restitution publique</div>
+          <div class="t-desc">12 juin : plantation à Gédon. 23 juin : restitution au Ciné-Théâtre de Lamentin.</div>
+          <div class="t-detail">2 juin : visite de Gédon avec la CANBT et un botaniste. 12 juin : plantation avec l'école de Madame. 23 juin : restitution publique.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modérateur frise -->
+    <div style="margin-top:1rem;">
+      <button class="modo-btn-open" onclick="toggleZone('zone-frise-modo')">🔒 Espace modérateur — Compléter la frise</button>
+      <div id="zone-frise-modo" style="display:none;" class="modo-zone">
+        <div id="frise-lbox">
+          <p style="font-size:12px;color:#555;margin-bottom:.5rem;">Mot de passe enseignant :</p>
+          <input type="password" id="fpwd" class="modo-input" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')friseLogin()">
+          <p id="fpwd-err" class="modo-err">Mot de passe incorrect.</p>
+          <div style="display:flex;gap:8px;">
+            <button class="modo-btn-login" onclick="friseLogin()">Connexion</button>
+            <button class="modo-btn-cancel" onclick="toggleZone('zone-frise-modo')">Annuler</button>
+          </div>
+        </div>
+        <div id="frise-ebox" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
+            <strong style="font-size:13px;">Ajouter une étape</strong>
+            <button onclick="friseLogout()" style="font-size:11px;color:#888;background:none;border:none;cursor:pointer;">Déconnexion</button>
+          </div>
+          <label class="modo-lbl">Période *</label>
+          <input type="text" id="fp" class="modo-input" placeholder="Ex : Octobre 2026">
+          <label class="modo-lbl">Titre *</label>
+          <input type="text" id="ft" class="modo-input" placeholder="Ex : Grande plantation">
+          <label class="modo-lbl">Résumé *</label>
+          <input type="text" id="fr" class="modo-input" placeholder="Ex : Les élèves plantent avec la CANBT.">
+          <label class="modo-lbl">Détail (facultatif)</label>
+          <textarea id="fd" class="modo-textarea" placeholder="Description détaillée..."></textarea>
+          <label class="modo-lbl">Couleur</label>
+          <select id="fa" class="modo-select">
+            <option value="y1">Vert — Année 1</option>
+            <option value="y2">Violet — Année 2</option>
+            <option value="now" selected>Orange — En cours</option>
+          </select>
+          <p id="fe" class="modo-err">Champs obligatoires manquants.</p>
+          <button class="modo-btn-submit" onclick="ajouterEtape()">+ Ajouter cette étape</button>
+          <div id="frise-liste" style="margin-top:.75rem;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-defs">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><i class="ti ti-map-pin" style="font-size:20px;color:var(--green)"></i><strong style="font-size:14px;">C'est quoi une aire éducative ?</strong></div>
+      <div style="font-size:13px;color:var(--text-mid);line-height:1.6;">Un petit territoire naturel géré de manière participative par des élèves.</div>
+      <div style="background:var(--green-bg);border-radius:6px;padding:.625rem .875rem;margin-top:8px;font-size:12px;color:var(--green-dark);line-height:1.5;">Notre aire éducative, le site de Gédon, est terrestre. Elle est traversée par la Grande Rivière à Goyaves.</div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><i class="ti ti-butterfly" style="font-size:20px;color:#639922"></i><strong style="font-size:14px;">C'est quoi la biodiversité ?</strong></div>
+      <div style="font-size:13px;color:var(--text-mid);line-height:1.6;">La diversité de toutes les formes de vie dans un milieu.</div>
+      <div style="background:#EAF3DE;border-radius:6px;padding:.625rem .875rem;margin-top:8px;font-size:12px;color:#27500A;line-height:1.5;">À Gédon : poissons, crustacés, oiseaux, plantes tropicales. Préserver la biodiversité c'est protéger cet équilibre.</div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><i class="ti ti-users" style="font-size:20px;color:var(--purple)"></i><strong style="font-size:14px;">C'est quoi le Conseil de la Terre ?</strong></div>
+      <div style="font-size:13px;color:var(--text-mid);line-height:1.6;">L'instance où les élèves se réunissent pour discuter du site et proposer des actions.</div>
+      <div style="background:var(--purple-bg);border-radius:6px;padding:.625rem .875rem;margin-top:8px;font-size:12px;color:var(--purple-dark);line-height:1.5;">En 2025-2026 : 3 Conseils de la Terre réunissant élèves, enseignants, parents, AESH et la CANBT.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE GALERIE -->
+<div class="page" id="page-galerie">
+  <div class="hero" style="text-align:left;padding:1.25rem;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <i class="ti ti-photo" style="font-size:28px;color:var(--green-pale)"></i>
+      <div><div class="hero-title" style="font-size:18px;">Galerie</div><div class="hero-sub" style="margin-bottom:0;">Photos &amp; vidéos du projet</div></div>
+    </div>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num" id="g-ph">2</div><div class="stat-lbl">Photos</div></div>
+    <div class="stat"><div class="stat-num" id="g-vi">13</div><div class="stat-lbl">Vidéos</div></div>
+    <div class="stat"><div class="stat-num" id="g-to">15</div><div class="stat-lbl">Total</div></div>
+  </div>
+  <div class="legal-box">
+    <i class="ti ti-shield-lock"></i>
+    <p><strong>Droit à l'image.</strong> Autorisation parentale signée. Publication conforme au RGPD.</p>
+  </div>
+  <div class="filter-bar" id="g-filters">
+    <button class="fbtn on" data-cat="tous" onclick="setFilter(this,'tous')">Tous</button>
+    <button class="fbtn" data-cat="site" onclick="setFilter(this,'site')">Le site</button>
+    <button class="fbtn" data-cat="conseil" onclick="setFilter(this,'conseil')">Conseils</button>
+    <button class="fbtn" data-cat="action" onclick="setFilter(this,'action')">Actions</button>
+    <button class="fbtn" data-cat="echange" onclick="setFilter(this,'echange')">Échanges</button>
+  </div>
+  <div class="lb" id="g-lb">
+    <div class="lb-top" id="g-lb-top"></div>
+    <div class="lb-bar">
+      <div><div class="lb-cap" id="g-lb-cap"></div><div class="lb-met" id="g-lb-met"></div></div>
+      <button class="btn-cls" onclick="closeLB()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="lb-nav">
+      <button class="nav-btn-lb" id="lb-prev" onclick="navLB(-1)"><i class="ti ti-arrow-left"></i> Préc.</button>
+      <button class="nav-btn-lb" id="lb-next" onclick="navLB(1)">Suiv. <i class="ti ti-arrow-right"></i></button>
+    </div>
+  </div>
+  <div class="g-grid" id="g-grid"></div>
+
+  <!-- Modérateur galerie -->
+  <div style="margin-top:.5rem;">
+    <button class="modo-btn-open" onclick="toggleZone('zone-gal-modo')">🔒 Espace modérateur — Ajouter des médias</button>
+    <div id="zone-gal-modo" style="display:none;" class="modo-zone">
+      <div id="gal-lbox">
+        <p style="font-size:12px;color:#555;margin-bottom:.5rem;">Mot de passe enseignant :</p>
+        <input type="password" id="gpwd" class="modo-input" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')galLogin()">
+        <p id="gpwd-err" class="modo-err">Mot de passe incorrect.</p>
+        <div style="display:flex;gap:8px;">
+          <button class="modo-btn-login" onclick="galLogin()">Connexion</button>
+          <button class="modo-btn-cancel" onclick="toggleZone('zone-gal-modo')">Annuler</button>
+        </div>
+      </div>
+      <div id="gal-ebox" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;margin-top:.5rem;">
+          <strong style="font-size:13px;">Ajouter un média</strong>
+          <button onclick="galLogout()" style="font-size:11px;color:#888;background:none;border:none;cursor:pointer;">Déconnexion</button>
+        </div>
+        <div style="background:#E1F5EE;border-radius:8px;padding:.625rem;margin-bottom:.75rem;font-size:11px;color:#085041;line-height:1.5;">
+          Les médias sont <strong>sauvegardés sur Cloudinary</strong> et visibles par tous les visiteurs.
+        </div>
+        <label class="modo-lbl">Fichier (photo ou vidéo MP4) *</label>
+        <input type="file" id="cl-file" accept="image/*,video/*" style="width:100%;font-size:12px;margin-bottom:.625rem;">
+        <label class="modo-lbl">Légende *</label>
+        <input type="text" id="cl-cap" class="modo-input" maxlength="80" placeholder="Décrivez ce moment…">
+        <label class="modo-lbl">Catégorie</label>
+        <select id="cl-cat" class="modo-select">
+          <option value="site">Sur le site de Gédon</option>
+          <option value="conseil">Conseil de la Terre</option>
+          <option value="action">Action citoyenne</option>
+          <option value="echange">Échange inter-écoles</option>
+        </select>
+        <div id="cl-progress" style="display:none;background:#f5f5f3;border-radius:8px;padding:.625rem;margin-bottom:.625rem;font-size:12px;color:#085041;text-align:center;">⏳ Envoi en cours…</div>
+        <div id="cl-err" style="display:none;font-size:11px;color:#A32D2D;margin-bottom:6px;"></div>
+        <button class="modo-btn-submit" onclick="uploadCloudinary()">☁️ Envoyer et publier</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE MUR -->
+<div class="page" id="page-mur">
+  <div class="hero" style="text-align:left;padding:1.25rem;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <i class="ti ti-heart" style="font-size:28px;color:var(--green-pale)"></i>
+      <div><div class="hero-title" style="font-size:18px;">Mur des engagements</div><div class="hero-sub" style="margin-bottom:0;">Laisse ta trace à Gédon</div></div>
+    </div>
+  </div>
+
+  <div class="counter-box">
+    <div class="counter-total"><div class="counter-num">0</div><div class="counter-lbl">visiteurs ont scanné ce QR code</div></div>
+    <div class="c-grid">
+      <div class="c-item"><i class="ti ti-school" style="color:var(--green)"></i><div><div class="c-num">0</div><div class="c-lbl">Élèves</div></div></div>
+      <div class="c-item"><i class="ti ti-users" style="color:var(--purple)"></i><div><div class="c-num">0</div><div class="c-lbl">Familles</div></div></div>
+      <div class="c-item"><i class="ti ti-home" style="color:var(--amber)"></i><div><div class="c-num">0</div><div class="c-lbl">Habitants</div></div></div>
+      <div class="c-item"><i class="ti ti-heart" style="color:#D4537E"></i><div><div class="c-num">0</div><div class="c-lbl">Anciens</div></div></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="showMTab('form',this)">M'engager</button>
+    <button class="tab" onclick="showMTab('wall',this)">Le mur</button>
+    <button class="tab" onclick="showMTab('modo',this)">Modérateur</button>
+  </div>
+
+  <div class="tab-panel on" id="mtab-form">
+    <div class="step-dots">
+      <div class="dot active" id="md0"></div><div class="dot" id="md1"></div>
+      <div class="dot" id="md2"></div><div class="dot" id="md3"></div><div class="dot" id="md4"></div>
+    </div>
+    <div class="form-step active" id="ms0">
+      <div class="section-lbl">Étape 1 sur 4</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:.5rem;">Qui es-tu aujourd'hui ?</div>
+      <div class="p-grid">
+        <button class="p-btn" onclick="selP(this,'eleve')"><i class="ti ti-school"></i><div class="p-btn-lbl">Élève</div><div class="p-btn-sub">École primaire</div></button>
+        <button class="p-btn" onclick="selP(this,'famille')"><i class="ti ti-users"></i><div class="p-btn-lbl">Famille</div><div class="p-btn-sub">En visite</div></button>
+        <button class="p-btn" onclick="selP(this,'habitant')"><i class="ti ti-home"></i><div class="p-btn-lbl">Habitant</div><div class="p-btn-sub">Ki rété Lamentin</div></button>
+        <button class="p-btn" onclick="selP(this,'ancien')"><i class="ti ti-heart"></i><div class="p-btn-lbl">Ancien</div><div class="p-btn-sub">mwen konnèt Gédon dèpi lontan</div></button>
+      </div>
+      <button class="btn-primary" id="mn0" disabled onclick="goMS(1)">Suivant</button>
+      <button class="btn-secondary" onclick="countOnly()">Juste compter ma visite</button>
+    </div>
+    <div class="form-step" id="ms1">
+      <div class="section-lbl">Étape 2 sur 4</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:.5rem;">Qu'est-ce qui te tient à cœur ?</div>
+      <div class="c-list">
+        <button class="c-btn" onclick="selT(this,'proprete')"><i class="ti ti-trash"></i><div><div class="c-btn-lbl">La propreté du site</div><div class="c-btn-sub">Ne pas polluer, ramasser les déchets</div></div></button>
+        <button class="c-btn" onclick="selT(this,'nature')"><i class="ti ti-trees"></i><div><div class="c-btn-lbl">La nature et la biodiversité</div><div class="c-btn-sub">Protéger la faune et la flore</div></div></button>
+        <button class="c-btn" onclick="selT(this,'eau')"><i class="ti ti-droplet"></i><div><div class="c-btn-lbl">La rivière et l'eau</div><div class="c-btn-sub">Préserver la Grande Rivière à Goyaves</div></div></button>
+        <button class="c-btn" onclick="selT(this,'visite')"><i class="ti ti-calendar-heart"></i><div><div class="c-btn-lbl">Revenir et faire connaître</div><div class="c-btn-sub">Parler de Gédon autour de moi</div></div></button>
+      </div>
+      <div class="btn-row"><button class="btn-back" onclick="goMS(0)">Retour</button><button class="btn-primary" id="mn1" disabled onclick="goMS(2)">Suivant</button></div>
+    </div>
+    <div class="form-step" id="ms2">
+      <div class="section-lbl">Étape 3 sur 4</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:.5rem;">Écris ton engagement</div>
+      <div class="eng-box">
+        <div class="eng-prompt">Complète cette phrase :</div>
+        <div class="eng-starter" id="m-starter">"Moi, je m'engage à…"</div>
+        <textarea id="m-txt" maxlength="160" oninput="onMTxt()" placeholder="Écris ta promesse pour Gédon…"></textarea>
+        <div class="char-count"><span id="m-cleft">160</span> caractères restants</div>
+      </div>
+      <div class="warn-box"><i class="ti ti-info-circle"></i><p>Ton message sera relu par sé ansegnan-la avant d'être affiché.</p></div>
+      <div class="btn-row"><button class="btn-back" onclick="goMS(1)">Retour</button><button class="btn-primary" id="mn2" disabled onclick="goMS(3)">Suivant</button></div>
+    </div>
+    <div class="form-step" id="ms3">
+      <div class="section-lbl">Étape 4 sur 4</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:.5rem;">Comment signer ?</div>
+      <input type="text" id="m-name" maxlength="30" placeholder="Ton prénom (facultatif)" oninput="updatePreview()">
+      <div class="eng-box">
+        <div class="eng-prompt">Aperçu :</div>
+        <div id="m-preview-theme" style="font-size:11px;color:var(--green);font-weight:600;margin-bottom:4px;"></div>
+        <div id="m-preview-txt" style="font-size:13px;font-style:italic;line-height:1.6;"></div>
+        <div id="m-preview-name" style="font-size:11px;color:var(--text-light);margin-top:6px;"></div>
+      </div>
+      <div class="btn-row"><button class="btn-back" onclick="goMS(2)">Retour</button><button class="btn-primary" onclick="submitEng()">Publier mon engagement</button></div>
+    </div>
+    <div class="form-step" id="ms4">
+      <div class="success-card">
+        <i class="ti ti-circle-check success-icon"></i>
+        <div class="success-title">Merci pour ton engagement !</div>
+        <div class="success-msg">Ton message sera bientôt visible sur le mur, après validation par les enseignants.</div>
+      </div>
+    </div>
+    <div class="form-step" id="ms-count">
+      <div class="success-card" style="background:var(--gray-bg);border-color:var(--gray-border);">
+        <i class="ti ti-check success-icon" style="color:var(--green)"></i>
+        <div class="success-title" style="color:var(--text);">Visite enregistrée !</div>
+        <div class="success-msg" style="color:var(--text-mid);">Merci d'être venu à Gédon.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="mtab-wall">
+    <div class="section-lbl">Engagements validés</div>
+    <div class="wall-card"><div class="wall-top"><span class="tag tag-site">Propreté</span></div><div class="wall-text">"Je m'engage à repartir avec mes déchets et à sensibiliser ma famille."</div><div class="wall-meta">Famille · Lamentin · 7 juin 2026</div></div>
+    <div class="wall-card"><div class="wall-top"><span class="tag tag-conseil">Nature</span></div><div class="wall-text">"Moi Keyven, je m'engage à protéger les arbres et les animaux de Gédon."</div><div class="wall-meta">Élève CE2 · École de la Rosière · 5 juin 2026</div></div>
+    <div class="wall-card"><div class="wall-top"><span class="tag" style="background:var(--blue-bg);color:var(--blue-dark);">Rivière</span></div><div class="wall-text">"Je m'engage à ne jamais jeter quoi que ce soit dans la Grande Rivière à Goyaves."</div><div class="wall-meta">Habitant · Lamentin · 2 juin 2026</div></div>
+    <div id="wall-new"></div>
+  </div>
+
+  <div class="tab-panel" id="mtab-modo">
+    <div id="modo-login-box">
+      <div class="section-lbl">Accès modérateur</div>
+      <div class="mod-login">
+        <div style="font-size:13px;color:var(--text-mid);margin-bottom:10px;">Réservé aux enseignants de l'école de la Rosière.</div>
+        <input class="mod-input" type="password" id="m-pwd" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')tryLogin()">
+        <div class="mod-err" id="m-err">Mot de passe incorrect.</div>
+        <button class="btn-primary" onclick="tryLogin()">Se connecter</button>
+      </div>
+    </div>
+    <div id="modo-panel" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
+        <div class="section-lbl" style="margin:0;">Messages en attente</div>
+        <button onclick="logoutModo()" style="font-size:11px;color:var(--text-light);background:none;border:none;cursor:pointer;">Déconnexion</button>
+      </div>
+      <div id="pending-list">
+        <div class="pending-card">
+          <div style="display:flex;gap:6px;margin-bottom:4px;"><span class="tag tag-pending">En attente</span><span class="tag tag-echange">Nature</span></div>
+          <div class="wall-text">"Moi Soriane, je m'engage à planter des fleurs à Gédon avec ma classe."</div>
+          <div class="wall-meta">Élève CE1/CE2 · 8 juin 2026</div>
+          <div class="mod-actions">
+            <button class="btn-approve" onclick="approvePending(this)"><i class="ti ti-check" style="font-size:12px;"></i> Valider</button>
+            <button class="btn-reject" onclick="rejectPending(this)"><i class="ti ti-trash" style="font-size:12px;"></i> Supprimer</button>
+          </div>
+        </div>
+      </div>
+      <div id="modo-empty" style="display:none;text-align:center;padding:1.5rem 0;font-size:13px;color:var(--text-light);">
+        <i class="ti ti-circle-check" style="font-size:24px;color:var(--green);display:block;margin-bottom:6px;"></i>Aucun message en attente !
+      </div>
+      <div class="section-lbl" style="margin-top:1rem;">Statistiques hebdomadaires</div>
+      <div class="stat-row">
+        <div class="stat"><div class="stat-num">47</div><div class="stat-lbl">Visiteurs cette semaine</div></div>
+        <div class="stat"><div class="stat-num">12</div><div class="stat-lbl">Soumis</div></div>
+        <div class="stat"><div class="stat-num">10</div><div class="stat-lbl">Validés</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE PARTENAIRES -->
+<div class="page" id="page-partenaires">
+  <div class="hero" style="text-align:left;padding:1.25rem;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <i class="ti ti-building-community" style="font-size:28px;color:var(--green-pale)"></i>
+      <div><div class="hero-title" style="font-size:18px;">Partenaires</div><div class="hero-sub" style="margin-bottom:0;">Les acteurs du projet Gédon</div></div>
+    </div>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num">8</div><div class="stat-lbl">Partenaires</div></div>
+    <div class="stat"><div class="stat-num">7 000€</div><div class="stat-lbl">Budget action</div></div>
+    <div class="stat"><div class="stat-num">2 ans</div><div class="stat-lbl">De projet</div></div>
+  </div>
+  <div class="section-lbl">Partenaires du projet</div>
+  <div class="partner-grid" id="partner-grid">
+    <div class="p-card"><div class="p-name">CANBT</div><div class="p-role">Communauté d'Agglomération Nord Basse-Terre · propriétaire du site</div><span class="p-badge pb-tech">Technique</span></div>
+    <div class="p-card"><div class="p-name">Parc National de Guadeloupe</div><div class="p-role">Appui scientifique biodiversité</div><span class="p-badge pb-tech">Technique</span></div>
+    <div class="p-card"><div class="p-name">OFB</div><div class="p-role">Office Français de la Biodiversité</div><span class="p-badge pb-fin">Financier</span></div>
+    <div class="p-card"><div class="p-name">Municipalité du Lamentin</div><div class="p-role">Appui aux actions de terrain</div><span class="p-badge pb-tech">Technique</span></div>
+    <div class="p-card"><div class="p-name">Académie de Guadeloupe</div><div class="p-role">Cadre institutionnel éducatif</div><span class="p-badge pb-inst">Institutionnel</span></div>
+    <div class="p-card"><div class="p-name">Circonscription de Sainte-Rose</div><div class="p-role">Suivi pédagogique</div><span class="p-badge pb-edu">Éducatif</span></div>
+    <div class="p-card"><div class="p-name">Aire Terrestre Éducative</div><div class="p-role">Dispositif national de référence</div><span class="p-badge pb-inst">Dispositif</span></div>
+    <div class="p-card"><div class="p-name">Trousse à projets</div><div class="p-role">Accompagnement et financement</div><span class="p-badge pb-fin">Financier</span></div>
+  </div>
+
+  <div class="section-lbl" style="margin-top:1rem;">École partenaire — Échanges</div>
+  <div class="card green-border">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><i class="ti ti-building-school" style="font-size:20px;color:var(--coral)"></i><strong>École de Madame · Sainte-Rose</strong></div>
+    <div style="font-size:12px;color:var(--text-mid);line-height:1.6;">Échanges réguliers : visites croisées, plantations communes, restitution partagée le 23 juin 2026 au Ciné-Théâtre de Lamentin.</div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><i class="ti ti-building-school" style="font-size:20px;color:var(--purple)"></i><strong>École de Duzer · Sainte-Rose</strong></div>
+    <div style="font-size:12px;color:var(--text-mid);line-height:1.6;">Visites communes : pépinières, Parc zoologique des Mamelles, plantation à Gédon le 12 juin 2026.</div>
+  </div>
+
+  <!-- Modérateur partenaires -->
+  <div style="margin-top:1rem;">
+    <button class="modo-btn-open" onclick="toggleZone('zone-part-modo')">🔒 Espace modérateur — Gérer les partenaires</button>
+    <div id="zone-part-modo" style="display:none;" class="modo-zone">
+      <div id="part-lbox">
+        <p style="font-size:12px;color:#555;margin-bottom:.5rem;">Mot de passe enseignant :</p>
+        <input type="password" id="ppwd" class="modo-input" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')partLogin()">
+        <p id="ppwd-err" class="modo-err">Mot de passe incorrect.</p>
+        <div style="display:flex;gap:8px;">
+          <button class="modo-btn-login" onclick="partLogin()">Connexion</button>
+          <button class="modo-btn-cancel" onclick="toggleZone('zone-part-modo')">Annuler</button>
+        </div>
+      </div>
+      <div id="part-ebox" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
+          <strong style="font-size:13px;">Ajouter un partenaire</strong>
+          <button onclick="partLogout()" style="font-size:11px;color:#888;background:none;border:none;cursor:pointer;">Déconnexion</button>
+        </div>
+        <label class="modo-lbl">Nom *</label>
+        <input type="text" id="pnom" class="modo-input" placeholder="Ex : Région Guadeloupe">
+        <label class="modo-lbl">Rôle *</label>
+        <input type="text" id="prole" class="modo-input" placeholder="Ex : Financement des panneaux">
+        <label class="modo-lbl">Présentation</label>
+        <textarea id="ppres" class="modo-textarea" placeholder="Quelques phrases..."></textarea>
+        <label class="modo-lbl">Type</label>
+        <select id="ptype" class="modo-select">
+          <option value="pb-tech">Technique</option>
+          <option value="pb-fin">Financier</option>
+          <option value="pb-inst">Institutionnel</option>
+          <option value="pb-edu">Éducatif</option>
+        </select>
+        <p id="pe" class="modo-err">Champs obligatoires manquants.</p>
+        <button class="modo-btn-submit" onclick="ajouterPartenaire()">+ Ajouter ce partenaire</button>
+        <div id="part-liste" style="margin-top:.75rem;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer" style="border-radius:var(--radius-md);margin-top:1rem;">
+    <strong>Site de Gédon — Aire Terrestre Éducative</strong><br>
+    École élémentaire de la Rosière · Lamentin, Guadeloupe<br>
+    Mme Patricia Galas · M. François Daibissaram
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   UTILITAIRES
+   ============================================================ */
+function toggleZone(id) {
+  var el = document.getElementById(id);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function goPage(id, btn) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ============================================================
+   LANGUE
+   ============================================================ */
+var L = {
+  fr: { 'h-title':'Site de Gédon','h-sub':'Lamentin · Guadeloupe · Patrimoine vivant & Nature','quote-home':'"Gédon, c\'est notre rivière. Dans les années 50, les grands-parents venaient y laver et faire sécher leurs vêtements. Longtemps oublié, le site renaît grâce à vous."','nc-hist':'Notre histoire','nc-hist-sub':'Mémoire du lieu et projet sur 2 ans','nc-gal':'Galerie','nc-gal-sub':'Photos et vidéos du projet','nc-mur':'S\'engager','nc-mur-sub':'Laisser un engagement pour Gédon','nc-part':'Partenaires','nc-part-sub':'Les acteurs du projet','lbl-explorer':'Explorer' },
+  kw: { 'h-title':'Sit Gédon','h-sub':'Lamentin · Gwadloup · Patrimwàn vivan ak Nati','quote-home':'"Gédon, sé rivyè nou. An ané 50, gran-paran nou té vini lave é séché rad yo la. Lontan abandonné, sit-la ka rénèt gras a zot."','nc-hist':'Istwè nou','nc-hist-sub':'Souvni kité la ak pwojé-a','nc-gal':'Galéri','nc-gal-sub':'Foto ak vidéyo','nc-mur':'Angajé','nc-mur-sub':'Kité on pwomès pou Gédon','nc-part':'Paténè','nc-part-sub':'Moun ki travay ansanm','lbl-explorer':'Exploré' },
+  en: { 'h-title':'Gédon Site','h-sub':'Lamentin · Guadeloupe · Living Heritage & Nature','quote-home':'"Gédon is our river. In the 1950s, grandparents came here to wash and dry their clothes. Long forgotten, the site is being reborn thanks to you."','nc-hist':'Our history','nc-hist-sub':'Memory of the place and 2-year project','nc-gal':'Gallery','nc-gal-sub':'Photos and videos','nc-mur':'Get involved','nc-mur-sub':'Leave a commitment for Gédon','nc-part':'Partners','nc-part-sub':'Project stakeholders','lbl-explorer':'Explore' }
+};
+function setLang(l, btn) {
+  document.querySelectorAll('.lbtn').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  var t = L[l]; if (!t) return;
+  Object.keys(t).forEach(function(k) { var el = document.getElementById(k); if (el) el.textContent = t[k]; });
+}
+
+/* ============================================================
+   TABS HISTOIRE
+   ============================================================ */
+function showTab(id, btn) {
+  document.querySelectorAll('#page-histoire .tab-panel').forEach(function(p) { p.classList.remove('on'); });
+  document.querySelectorAll('#page-histoire .tab').forEach(function(b) { b.classList.remove('on'); });
+  document.getElementById('tab-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+function toggleT(card) {
+  var d = card.querySelector('.t-detail');
+  var c = card.querySelector('.chevron');
+  var open = d.classList.contains('open');
+  document.querySelectorAll('.t-detail').forEach(function(x) { x.classList.remove('open'); });
+  document.querySelectorAll('.chevron').forEach(function(x) { x.style.transform = ''; });
+  if (!open) { d.classList.add('open'); c.style.transform = 'rotate(180deg)'; }
+}
+
+/* ============================================================
+   MODÉRATEUR FRISE
+   ============================================================ */
+function friseLogin() {
+  if (document.getElementById('fpwd').value === 'gedon2026') {
+    document.getElementById('frise-lbox').style.display = 'none';
+    document.getElementById('frise-ebox').style.display = 'block';
+    document.getElementById('fpwd-err').style.display = 'none';
+    document.getElementById('fpwd').value = '';
+  } else { document.getElementById('fpwd-err').style.display = 'block'; }
+}
+function friseLogout() {
+  document.getElementById('frise-lbox').style.display = 'block';
+  document.getElementById('frise-ebox').style.display = 'none';
+}
+function ajouterEtape() {
+  var p = document.getElementById('fp').value.trim();
+  var t = document.getElementById('ft').value.trim();
+  var r = document.getElementById('fr').value.trim();
+  var d = document.getElementById('fd').value.trim();
+  var a = document.getElementById('fa').value;
+  if (!p || !t || !r) { document.getElementById('fe').style.display = 'block'; return; }
+  document.getElementById('fe').style.display = 'none';
+  var dc = a === 'y1' ? 'y1' : a === 'y2' ? 'y2' : 'now';
+  var ec = a === 'y1' ? 'era-y1' : a === 'y2' ? 'era-y2' : 'era-now';
+  var tl = document.querySelector('#tab-projet .timeline');
+  var id = Date.now();
+  var item = document.createElement('div');
+  item.className = 't-item';
+  item.dataset.eid = id;
+  item.innerHTML = '<div class="t-dot ' + dc + '"></div>'
+    + '<div class="t-card" onclick="toggleT(this)">'
+    + '<div class="t-card-top"><span class="t-era ' + ec + '">' + p + '</span><i class="ti ti-chevron-down chevron"></i></div>'
+    + '<div class="t-title">' + t + '</div>'
+    + '<div class="t-desc">' + r + '</div>'
+    + (d ? '<div class="t-detail">' + d + '</div>' : '')
+    + '</div>';
+  tl.appendChild(item);
+  var li = document.getElementById('frise-liste');
+  var row = document.createElement('div');
+  row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:.375rem .5rem;background:#fff;border-radius:6px;margin-top:4px;font-size:12px;';
+  row.innerHTML = '<span>' + p + ' — ' + t + '</span>'
+    + '<button onclick="retirerEtape(' + id + ')" style="background:#FAECE7;border:1px solid #F0997B;border-radius:4px;padding:2px 6px;font-size:11px;color:#712B13;cursor:pointer;">Retirer</button>';
+  li.appendChild(row);
+  ['fp','ft','fr','fd'].forEach(function(i){ document.getElementById(i).value = ''; });
+}
+function retirerEtape(id) {
+  var el = document.querySelector('.t-item[data-eid="' + id + '"]');
+  if (el) el.remove();
+}
+
+/* ============================================================
+   MODÉRATEUR PARTENAIRES
+   ============================================================ */
+function partLogin() {
+  if (document.getElementById('ppwd').value === 'gedon2026') {
+    document.getElementById('part-lbox').style.display = 'none';
+    document.getElementById('part-ebox').style.display = 'block';
+    document.getElementById('ppwd-err').style.display = 'none';
+    document.getElementById('ppwd').value = '';
+  } else { document.getElementById('ppwd-err').style.display = 'block'; }
+}
+function partLogout() {
+  document.getElementById('part-lbox').style.display = 'block';
+  document.getElementById('part-ebox').style.display = 'none';
+}
+function ajouterPartenaire() {
+  var nom = document.getElementById('pnom').value.trim();
+  var role = document.getElementById('prole').value.trim();
+  var pres = document.getElementById('ppres').value.trim();
+  var type = document.getElementById('ptype').value;
+  if (!nom || !role) { document.getElementById('pe').style.display = 'block'; return; }
+  document.getElementById('pe').style.display = 'none';
+  var labels = {'pb-tech':'Technique','pb-fin':'Financier','pb-inst':'Institutionnel','pb-edu':'Éducatif'};
+  var grid = document.getElementById('partner-grid');
+  var pid = Date.now();
+  var card = document.createElement('div');
+  card.className = 'p-card'; card.dataset.pid = pid;
+  card.innerHTML = '<div class="p-name">' + nom + '</div>'
+    + '<div class="p-role">' + role + '</div>'
+    + (pres ? '<div style="font-size:11px;color:#555;margin-top:4px;line-height:1.4;">' + pres + '</div>' : '')
+    + '<span class="p-badge ' + type + '">' + labels[type] + '</span>';
+  grid.appendChild(card);
+  var li = document.getElementById('part-liste');
+  var row = document.createElement('div');
+  row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:.375rem .5rem;background:#fff;border-radius:6px;margin-top:4px;font-size:12px;';
+  row.innerHTML = '<span>' + nom + '</span>'
+    + '<button onclick="retirerPartenaire(' + pid + ')" style="background:#FAECE7;border:1px solid #F0997B;border-radius:4px;padding:2px 6px;font-size:11px;color:#712B13;cursor:pointer;">Retirer</button>';
+  li.appendChild(row);
+  ['pnom','prole','ppres'].forEach(function(i){ document.getElementById(i).value = ''; });
+}
+function retirerPartenaire(pid) {
+  var card = document.querySelector('.p-card[data-pid="' + pid + '"]');
+  if (card) card.remove();
+}
+
+/* ============================================================
+   GALERIE
+   ============================================================ */
+var GDATA = [
+  {id:1,type:'photo',src:null,cap:'Conseil de la Terre en plein air',date:'Juin 2026',cat:'conseil'},
+  {id:2,type:'photo',src:null,cap:'Échanges lors du Conseil de la Terre',date:'Juin 2026',cat:'conseil'},
+  {id:3,type:'video',src:null,cap:'Vidéo projet — séquence 4',date:'Juin 2026',cat:'conseil',dur:'0:32'},
+  {id:4,type:'video',src:null,cap:'Vidéo projet — séquence 5',date:'Juin 2026',cat:'conseil',dur:'0:28'},
+  {id:5,type:'video',src:null,cap:'Visite du site de Gédon',date:'Juin 2026',cat:'site',dur:'1:04'},
+  {id:6,type:'video',src:null,cap:'Action nettoyage du site',date:'Juin 2026',cat:'action',dur:'0:45'},
+  {id:7,type:'video',src:null,cap:'Travail en classe',date:'Juin 2026',cat:'conseil',dur:'0:38'},
+  {id:8,type:'video',src:null,cap:'Sortie nature — biodiversité',date:'Juin 2026',cat:'site',dur:'1:12'},
+  {id:9,type:'video',src:null,cap:"Échange avec l'école de Madame",date:'Juin 2026',cat:'echange',dur:'0:55'},
+  {id:10,type:'video',src:null,cap:'Prises de parole au Conseil',date:'Juin 2026',cat:'conseil',dur:'0:42'},
+  {id:11,type:'video',src:null,cap:'Plantation — plage des Amandiers',date:'Avr. 2026',cat:'action',dur:'1:20'},
+  {id:12,type:'video',src:null,cap:'Visite du Parc zoologique des Mamelles',date:'Mars 2026',cat:'echange',dur:'0:58'},
+  {id:13,type:'video',src:null,cap:'Visite pépinières Birmingham',date:'Déc. 2025',cat:'echange',dur:'0:50'},
+  {id:14,type:'video',src:null,cap:'Présentation du projet aux invités',date:'Juin 2026',cat:'conseil',dur:'0:35'},
+  {id:15,type:'video',src:null,cap:'Clôture du Conseil de la Terre',date:'Juin 2026',cat:'conseil',dur:'0:27'}
+];
+var GCAT = {tous:'Tous',site:'Le site',conseil:'Conseil',action:'Action',echange:'Échange'};
+var GCUR = -1, GFILTER = 'tous', GNID = 200;
+
+function gFiltered() {
+  return GFILTER === 'tous' ? GDATA : GDATA.filter(function(m){ return m.cat === GFILTER; });
+}
+
+function setFilter(btn, cat) {
+  GFILTER = cat;
+  document.querySelectorAll('#g-filters .fbtn').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  renderGallery();
+}
+
+function renderGallery() {
+  var ph = GDATA.filter(function(m){ return m.type === 'photo'; }).length;
+  var vi = GDATA.filter(function(m){ return m.type === 'video'; }).length;
+  document.getElementById('g-ph').textContent = ph;
+  document.getElementById('g-vi').textContent = vi;
+  document.getElementById('g-to').textContent = GDATA.length;
+  var list = gFiltered();
+  var grid = document.getElementById('g-grid');
+  grid.innerHTML = '';
+  list.forEach(function(m) {
+    var idx = GDATA.indexOf(m);
+    var tc = m.cat==='site'?'tag-site':m.cat==='conseil'?'tag-conseil':m.cat==='action'?'tag-action':'tag-echange';
+    var d = document.createElement('div');
+    d.className = 'g-card';
+    var thumbHtml;
+    if (m.type === 'photo') {
+      thumbHtml = m.src
+        ? '<img class="g-thumb" src="' + m.src + '" alt="' + m.cap + '" loading="lazy">'
+        : '<div class="g-thumb-ph"><i class="ti ti-photo"></i></div>';
+    } else {
+      if (m.thumb) {
+        thumbHtml = '<div style="position:relative;">'
+          + '<img class="g-thumb" src="' + m.thumb + '" loading="lazy">'
+          + '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.5);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">'
+          + '<i class="ti ti-player-play" style="color:#fff;font-size:16px;"></i></div></div>';
+      } else {
+        thumbHtml = '<div class="g-thumb-ph"><i class="ti ti-player-play"></i>'
+          + (m.dur ? '<span class="g-dur">' + m.dur + '</span>' : '') + '</div>';
+      }
+    }
+    d.innerHTML = thumbHtml
+      + '<div class="g-info"><span class="tag ' + tc + '">' + GCAT[m.cat] + '</span>'
+      + '<div class="g-cap">' + m.cap + '</div><div class="g-met">' + m.date + '</div></div>';
+    (function(i){ d.onclick = function(){ openLB(i); }; })(idx);
+    grid.appendChild(d);
+  });
+}
+
+function openLB(idx) {
+  GCUR = idx; var m = GDATA[idx];
+  var top = document.getElementById('g-lb-top'); top.innerHTML = '';
+  if (m.type === 'photo' && m.src) {
+    var img = document.createElement('img');
+    img.src = m.src; img.alt = m.cap;
+    img.style.cssText = 'width:100%;max-height:300px;object-fit:contain;display:block;';
+    top.appendChild(img);
+  } else if (m.type === 'video' && m.src) {
+    var v = document.createElement('video');
+    v.src = m.src; v.controls = true; v.playsInline = true;
+    v.style.cssText = 'width:100%;max-height:300px;display:block;';
+    top.appendChild(v);
+  } else {
+    top.innerHTML = '<div class="lb-ph"><i class="ti ti-' + (m.type==='photo'?'photo':'video') + '"></i><p>' + (m.type==='photo'?'Photo':'Vidéo') + " du projet.<br>Visible dans l'application hébergée.</p></div>";
+  }
+  document.getElementById('g-lb-cap').textContent = m.cap;
+  document.getElementById('g-lb-met').textContent = m.date + ' · ' + GCAT[m.cat];
+  var list = gFiltered(), pos = list.indexOf(m);
+  document.getElementById('lb-prev').disabled = pos <= 0;
+  document.getElementById('lb-next').disabled = pos >= list.length - 1;
+  var lb = document.getElementById('g-lb');
+  lb.classList.add('open');
+  lb.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function navLB(d) {
+  var list = gFiltered(), pos = list.indexOf(GDATA[GCUR]), np = pos + d;
+  if (np >= 0 && np < list.length) openLB(GDATA.indexOf(list[np]));
+}
+function closeLB() {
+  var lb = document.getElementById('g-lb');
+  lb.classList.remove('open');
+  var v = document.getElementById('g-lb-top').querySelector('video');
+  if (v) { v.pause(); v.src = ''; }
+  GCUR = -1;
+}
+
+/* ============================================================
+   CLOUDINARY UPLOAD
+   ============================================================ */
+var CLOUD_NAME = 'dzurzxawi';
+var CLOUD_PRESET = 'gedon_upload';
+
+function galLogin() {
+  if (document.getElementById('gpwd').value === 'gedon2026') {
+    document.getElementById('gal-lbox').style.display = 'none';
+    document.getElementById('gal-ebox').style.display = 'block';
+    document.getElementById('gpwd-err').style.display = 'none';
+    document.getElementById('gpwd').value = '';
+  } else { document.getElementById('gpwd-err').style.display = 'block'; }
+}
+function galLogout() {
+  document.getElementById('gal-lbox').style.display = 'block';
+  document.getElementById('gal-ebox').style.display = 'none';
+}
+function uploadCloudinary() {
+  var file = document.getElementById('cl-file').files[0];
+  var cap = document.getElementById('cl-cap').value.trim();
+  var cat = document.getElementById('cl-cat').value;
+  if (!file) { showClErr('Veuillez choisir un fichier.'); return; }
+  if (!cap) { showClErr('Veuillez ajouter une légende.'); return; }
+  var isVideo = file.type.indexOf('video') >= 0 || /\.(mp4|mov|avi|webm|mkv)$/i.test(file.name);
+  document.getElementById('cl-progress').style.display = 'block';
+  document.getElementById('cl-err').style.display = 'none';
+  var fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUD_PRESET);
+  fd.append('folder', 'gedon');
+  var url = 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/' + (isVideo ? 'video' : 'image') + '/upload';
+  fetch(url, {method:'POST', body:fd})
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      document.getElementById('cl-progress').style.display = 'none';
+      if (data.error) { showClErr('Erreur : ' + data.error.message); return; }
+      var date = new Date().toLocaleDateString('fr-FR', {month:'short', year:'numeric'});
+      GDATA.unshift({
+        id: GNID++, type: isVideo ? 'video' : 'photo',
+        src: data.secure_url, cap: cap, date: date, cat: cat,
+        dur: isVideo ? '▶' : undefined,
+        thumb: isVideo ? data.secure_url.replace('/upload/', '/upload/so_0,w_300,h_225,c_fill/').replace('.mp4', '.jpg') : null
+      });
+      renderGallery();
+      document.getElementById('cl-file').value = '';
+      document.getElementById('cl-cap').value = '';
+    })
+    .catch(function(){ showClErr('Erreur réseau. Vérifiez votre connexion.'); document.getElementById('cl-progress').style.display = 'none'; });
+}
+function showClErr(msg) {
+  var el = document.getElementById('cl-err');
+  el.textContent = msg; el.style.display = 'block';
+}
+
+/* ============================================================
+   MUR ENGAGEMENTS
+   ============================================================ */
+var MSTATE = {profile:null, theme:null, text:'', name:''};
+var MSTARTERS = {
+  proprete:'"Moi, je m\'engage à garder Gédon propre en\u2026"',
+  nature:'"Moi, je m\'engage à protéger la nature de Gédon en\u2026"',
+  eau:'"Moi, je m\'engage à préserver la rivière de Gédon en\u2026"',
+  visite:'"Moi, je m\'engage à faire connaître Gédon en\u2026"'
+};
+var MTHEMES = {proprete:'Propreté', nature:'Nature', eau:'Rivière', visite:'Partager'};
+var MPROFILES = {eleve:'Élève', famille:'Famille', habitant:'Habitant', ancien:'Ancien'};
+
+function showMTab(id, btn) {
+  document.querySelectorAll('#page-mur .tab-panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('#page-mur .tab').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById('mtab-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+function goMS(n) {
+  document.querySelectorAll('.form-step').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('ms' + n).classList.add('active');
+  document.querySelectorAll('.dot').forEach(function(d, i){
+    d.classList.remove('active','done');
+    if (i < n) d.classList.add('done');
+    else if (i === n) d.classList.add('active');
+  });
+  if (n === 3) updatePreview();
+}
+function selP(btn, val) {
+  document.querySelectorAll('#ms0 .p-btn').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel'); MSTATE.profile = val;
+  document.getElementById('mn0').disabled = false;
+}
+function selT(btn, val) {
+  document.querySelectorAll('#ms1 .c-btn').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel'); MSTATE.theme = val;
+  document.getElementById('mn1').disabled = false;
+  document.getElementById('m-starter').textContent = MSTARTERS[val] || '"Moi, je m\'engage à\u2026"';
+}
+function onMTxt() {
+  var v = document.getElementById('m-txt').value;
+  MSTATE.text = v;
+  document.getElementById('m-cleft').textContent = 160 - v.length;
+  document.getElementById('mn2').disabled = v.trim().length < 10;
+}
+function updatePreview() {
+  MSTATE.name = document.getElementById('m-name').value;
+  document.getElementById('m-preview-theme').textContent = MSTATE.theme ? MTHEMES[MSTATE.theme] : '';
+  document.getElementById('m-preview-txt').textContent = MSTATE.text ? '"' + MSTATE.text + '"' : '';
+  var n = MSTATE.name || 'Anonyme';
+  var p = MSTATE.profile ? MPROFILES[MSTATE.profile] : '';
+  document.getElementById('m-preview-name').textContent = n + (p ? ' · ' + p : '') + ' · ' + new Date().toLocaleDateString('fr-FR');
+}
+function submitEng() {
+  document.querySelectorAll('.form-step').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('ms4').classList.add('active');
+  document.querySelectorAll('.dot').forEach(function(d){ d.classList.remove('active'); d.classList.add('done'); });
+  var n = MSTATE.name || 'Anonyme';
+  var p = MSTATE.profile ? MPROFILES[MSTATE.profile] : '';
+  var date = new Date().toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+  var tc = MSTATE.theme==='proprete'?'tag-site':MSTATE.theme==='nature'?'tag-echange':MSTATE.theme==='eau'?'':' tag-conseil';
+  var wn = document.getElementById('wall-new');
+  var div = document.createElement('div'); div.className = 'wall-card';
+  div.innerHTML = '<div class="wall-top"><span class="tag ' + tc + '">' + (MSTATE.theme ? MTHEMES[MSTATE.theme] : '') + '</span></div>'
+    + '<div class="wall-text">"' + MSTATE.text + '"</div>'
+    + '<div class="wall-meta">' + n + (p ? ' · ' + p : '') + ' · ' + date + ' · <em>En attente de validation</em></div>';
+  wn.prepend(div);
+}
+function countOnly() {
+  document.querySelectorAll('.form-step').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('ms-count').classList.add('active');
+}
+
+/* ============================================================
+   MODÉRATEUR MUR
+   ============================================================ */
+function tryLogin() {
+  if (document.getElementById('m-pwd').value === 'gedon2026') {
+    document.getElementById('modo-login-box').style.display = 'none';
+    document.getElementById('modo-panel').style.display = 'block';
+    document.getElementById('m-err').style.display = 'none';
+  } else { document.getElementById('m-err').style.display = 'block'; }
+}
+function logoutModo() {
+  document.getElementById('modo-login-box').style.display = 'block';
+  document.getElementById('modo-panel').style.display = 'none';
+  document.getElementById('m-pwd').value = '';
+}
+function approvePending(btn) {
+  var card = btn.closest('.pending-card');
+  card.className = 'wall-card';
+  var tag = card.querySelector('.tag-pending');
+  if (tag) tag.remove();
+  btn.closest('.mod-actions').remove();
+  checkEmpty();
+}
+function rejectPending(btn) { btn.closest('.pending-card').remove(); checkEmpty(); }
+function checkEmpty() {
+  var r = document.querySelectorAll('.pending-card').length;
+  document.getElementById('modo-empty').style.display = r === 0 ? 'block' : 'none';
+}
+
+/* ============================================================
+   INIT — utilise window.onload au lieu de DOMContentLoaded
+   ============================================================ */
+window.onload = function() {
+  renderGallery();
+};
+</script>
+</body>
+</html>
