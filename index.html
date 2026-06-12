@@ -1073,6 +1073,7 @@ function uploadCloudinary() {
   fd.append('file', file);
   fd.append('upload_preset', CLOUD_PRESET);
   fd.append('folder', 'gedon');
+  fd.append('tags', 'gedon');
   var url = 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/' + (isVideo ? 'video' : 'image') + '/upload';
   fetch(url, {method:'POST', body:fd})
     .then(function(r){ return r.json(); })
@@ -1099,42 +1100,38 @@ function showClErr(msg) {
 
 /* Récupère les médias déjà publiés sur Cloudinary (dossier "gedon") */
 function loadCloudinaryMedias() {
-  fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/resources/search', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + btoa('349354316779757:sAieFoem5pbQ5FIlONRxr5bW_GY')
-    },
-    body: JSON.stringify({ expression: 'folder:gedon', max_results: 50, sort_by: [{ created_at: 'desc' }] })
-  })
-  .then(function(r){
-    if (!r.ok) {
-      r.text().then(function(t){ alert('Cloudinary erreur ' + r.status + ' : ' + t); });
-      throw new Error('HTTP ' + r.status);
-    }
-    return r.json();
-  })
-  .then(function(data) {
-    alert('Cloudinary OK, ' + (data.resources ? data.resources.length : 0) + ' éléments trouvés');
-    if (!data.resources) return;
+  var imgUrl = 'https://res.cloudinary.com/' + CLOUD_NAME + '/image/list/gedon.json';
+  var vidUrl = 'https://res.cloudinary.com/' + CLOUD_NAME + '/video/list/gedon.json';
+
+  function handleList(data, isVideo) {
+    if (!data || !data.resources) return;
     data.resources.forEach(function(r) {
-      var isVideo = r.resource_type === 'video';
-      var existing = GDATA.find(function(m){ return m.src === r.secure_url; });
+      var ext = r.format;
+      var src = 'https://res.cloudinary.com/' + CLOUD_NAME + '/' + (isVideo ? 'video' : 'image') + '/upload/' + r.public_id + '.' + ext;
+      var existing = GDATA.find(function(m){ return m.src === src; });
       if (!existing) {
         GDATA.unshift({
           id: GNID++,
           type: isVideo ? 'video' : 'photo',
-          src: r.secure_url,
-          cap: (r.context && r.context.custom && r.context.custom.caption) ? r.context.custom.caption : r.public_id.split('/').pop(),
-          date: new Date(r.created_at).toLocaleDateString('fr-FR', {month:'short', year:'numeric'}),
-          cat: (r.context && r.context.custom && r.context.custom.cat) ? r.context.custom.cat : 'site',
-          thumb: isVideo ? r.secure_url.replace('/upload/', '/upload/so_0,w_300,h_225,c_fill/').replace(/\.(mp4|mov|webm)$/i, '.jpg') : null
+          src: src,
+          cap: r.public_id.split('/').pop(),
+          date: r.created_at ? new Date(r.created_at).toLocaleDateString('fr-FR', {month:'short', year:'numeric'}) : '',
+          cat: 'site',
+          thumb: isVideo ? ('https://res.cloudinary.com/' + CLOUD_NAME + '/video/upload/so_0,w_300,h_225,c_fill/' + r.public_id + '.jpg') : null
         });
       }
     });
-    renderGallery();
-  })
-  .catch(function(err){ alert('Cloudinary échec réseau : ' + err.message); });
+  }
+
+  fetch(imgUrl)
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){ handleList(data, false); renderGallery(); })
+    .catch(function(){});
+
+  fetch(vidUrl)
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){ handleList(data, true); renderGallery(); })
+    .catch(function(){});
 }
 
 /* ============================================================
