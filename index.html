@@ -1194,10 +1194,26 @@ function checkEmpty() {
 }
 
 /* ============================================================
+   NAVIGATION PAR URL (pour les QR codes : ?page=mur, etc.)
+   ============================================================ */
+function openPageFromURL() {
+  var params = new URLSearchParams(window.location.search);
+  var page = params.get('page');
+  var valid = ['accueil','histoire','galerie','mur','partenaires'];
+  if (page && valid.indexOf(page) !== -1) {
+    var navOrder = ['accueil','histoire','galerie','mur','partenaires'];
+    var idx = navOrder.indexOf(page);
+    var btn = document.querySelectorAll('.nav-btn')[idx];
+    goPage(page, btn);
+  }
+}
+
+/* ============================================================
    INIT — utilise window.onload au lieu de DOMContentLoaded
    ============================================================ */
 window.onload = function() {
   renderGallery();
+  openPageFromURL();
 };
 </script>
 </body>
