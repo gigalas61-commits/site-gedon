@@ -517,6 +517,9 @@
       <button class="nav-btn-lb" id="lb-prev" onclick="navLB(-1)"><i class="ti ti-arrow-left"></i> Préc.</button>
       <button class="nav-btn-lb" id="lb-next" onclick="navLB(1)">Suiv. <i class="ti ti-arrow-right"></i></button>
     </div>
+    <div id="lb-del-row" style="display:none;text-align:center;padding-top:8px;">
+      <button class="nav-btn-lb" style="color:#c0392b;border-color:#c0392b;" onclick="deleteMedia()"><i class="ti ti-trash"></i> Supprimer ce média</button>
+    </div>
   </div>
   <div class="g-grid" id="g-grid"></div>
 
@@ -1026,6 +1029,9 @@ function openLB(idx) {
   var list = gFiltered(), pos = list.indexOf(m);
   document.getElementById('lb-prev').disabled = pos <= 0;
   document.getElementById('lb-next').disabled = pos >= list.length - 1;
+  var galEbox = document.getElementById('gal-ebox');
+  var canDelete = galEbox && galEbox.style.display !== 'none' && m.src;
+  document.getElementById('lb-del-row').style.display = canDelete ? 'block' : 'none';
   var lb = document.getElementById('g-lb');
   lb.classList.add('open');
   lb.scrollIntoView({behavior:'smooth', block:'nearest'});
@@ -1041,12 +1047,77 @@ function closeLB() {
   if (v) { v.pause(); v.src = ''; }
   GCUR = -1;
 }
+function deleteMedia() {
+  if (GCUR < 0) return;
+  if (!confirm('Supprimer définitivement ce média de la galerie ?')) return;
+  GDATA.splice(GCUR, 1);
+  closeLB();
+  renderGallery();
+  saveCloudMedias();
+}
 
 /* ============================================================
    CLOUDINARY UPLOAD
    ============================================================ */
 var CLOUD_NAME = 'dzurzxawi';
 var CLOUD_PRESET = 'gedon_upload';
+
+/* ============================================================
+   JSONBIN — stockage persistant de la liste des médias
+   ============================================================ */
+var JSONBIN_KEY = '$2a$10$m/Ncfb6y6Ui5fZWpzKur9.huT1l0nYyhE9ZHmbey3DHuiwQdSR1vS';
+var JSONBIN_ID = ''; // sera rempli une fois le bin créé (voir instructions)
+var JSONBIN_BASE = 'https://api.jsonbin.io/v3/b/';
+
+function jsonbinHeaders() {
+  return { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY };
+}
+
+/* Crée le bin une seule fois si JSONBIN_ID est vide, et affiche son ID à copier */
+function ensureBin() {
+  if (JSONBIN_ID) { loadCloudMedias(); return; }
+  fetch(JSONBIN_BASE, {
+    method: 'POST',
+    headers: Object.assign(jsonbinHeaders(), {'X-Bin-Name':'gedon-galerie','X-Bin-Private':'false'}),
+    body: JSON.stringify({ items: [] })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    if (data.metadata && data.metadata.id) {
+      alert('BIN CRÉÉ — copiez cet identifiant et envoyez-le pour finaliser :\n\n' + data.metadata.id);
+    } else {
+      alert('Erreur création bin : ' + JSON.stringify(data));
+    }
+  })
+  .catch(function(err){ alert('Erreur réseau JSONBin : ' + err.message); });
+}
+
+/* Charge la liste des médias persistés et les fusionne dans GDATA */
+function loadCloudMedias() {
+  if (!JSONBIN_ID) return;
+  fetch(JSONBIN_BASE + JSONBIN_ID + '/latest', { headers: jsonbinHeaders() })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (!data || !data.record || !data.record.items) return;
+      data.record.items.forEach(function(m){
+        var exists = GDATA.find(function(g){ return g.src === m.src; });
+        if (!exists) GDATA.unshift(m);
+      });
+      renderGallery();
+    })
+    .catch(function(){});
+}
+
+/* Sauvegarde la liste actuelle des médias ajoutés via Cloudinary (src non-null) */
+function saveCloudMedias() {
+  if (!JSONBIN_ID) return;
+  var items = GDATA.filter(function(m){ return m.src; });
+  fetch(JSONBIN_BASE + JSONBIN_ID, {
+    method: 'PUT',
+    headers: jsonbinHeaders(),
+    body: JSON.stringify({ items: items })
+  }).catch(function(){});
+}
 
 function galLogin() {
   if (document.getElementById('gpwd').value === 'gedon2026') {
@@ -1088,6 +1159,7 @@ function uploadCloudinary() {
         thumb: isVideo ? data.secure_url.replace('/upload/', '/upload/so_0,w_300,h_225,c_fill/').replace('.mp4', '.jpg') : null
       });
       renderGallery();
+      saveCloudMedias();
       document.getElementById('cl-file').value = '';
       document.getElementById('cl-cap').value = '';
     })
@@ -1099,41 +1171,6 @@ function showClErr(msg) {
 }
 
 /* Récupère les médias déjà publiés sur Cloudinary (dossier "gedon") */
-function loadCloudinaryMedias() {
-  var imgUrl = 'https://res.cloudinary.com/' + CLOUD_NAME + '/image/list/gedon.json';
-  var vidUrl = 'https://res.cloudinary.com/' + CLOUD_NAME + '/video/list/gedon.json';
-
-  function handleList(data, isVideo) {
-    if (!data || !data.resources) return;
-    data.resources.forEach(function(r) {
-      var ext = r.format;
-      var src = 'https://res.cloudinary.com/' + CLOUD_NAME + '/' + (isVideo ? 'video' : 'image') + '/upload/' + r.public_id + '.' + ext;
-      var existing = GDATA.find(function(m){ return m.src === src; });
-      if (!existing) {
-        GDATA.unshift({
-          id: GNID++,
-          type: isVideo ? 'video' : 'photo',
-          src: src,
-          cap: r.public_id.split('/').pop(),
-          date: r.created_at ? new Date(r.created_at).toLocaleDateString('fr-FR', {month:'short', year:'numeric'}) : '',
-          cat: 'site',
-          thumb: isVideo ? ('https://res.cloudinary.com/' + CLOUD_NAME + '/video/upload/so_0,w_300,h_225,c_fill/' + r.public_id + '.jpg') : null
-        });
-      }
-    });
-  }
-
-  fetch(imgUrl)
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(data){ handleList(data, false); renderGallery(); })
-    .catch(function(){});
-
-  fetch(vidUrl)
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(data){ handleList(data, true); renderGallery(); })
-    .catch(function(){});
-}
-
 /* ============================================================
    MUR ENGAGEMENTS
    ============================================================ */
@@ -1257,7 +1294,7 @@ function openPageFromURL() {
    ============================================================ */
 window.onload = function() {
   renderGallery();
-  loadCloudinaryMedias();
+  ensureBin();
   openPageFromURL();
 };
 </script>
